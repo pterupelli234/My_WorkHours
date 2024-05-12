@@ -1,0 +1,48 @@
+<!DOCTYPE html> 
+<html lang="en">
+    <head> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Work Hours in Local Time</title> 
+    </head>
+    <body>
+        <h1>My Work Hours in Your Local Time Zone</h1> 
+        <p id="workhours"></p> 
+
+        <script> 
+            function displayWorkHours() { 
+                // Define work hours in IST
+                const startHourIST = '13:00:00'; // 1 PM IST 
+                const endHourIST = '22:00:00'; // 10 PM IST
+                
+                // Get viewer's time zone
+                const viewerTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                // Create start and end work hours in IST
+                let startWork = new Date().toLocaleString('en-US', {timeZone: "Asia/Kolkata"});
+                startWork = new Date(startWork);
+                startWork.setHours(parseInt(startHourIST.substring(0, 2)), parseInt(startHourIST.substring(3, 5)), parseInt(startHourIST.substring(6, 8)), 0);
+                
+                let endWork = new Date().toLocaleString('en-US', {timeZone: "Asia/Kolkata"});
+                endWork = new Date(endWork);
+                endWork.setHours(parseInt(endHourIST.substring(0, 2)), parseInt(endHourIST.substring(3, 5)), parseInt(endHourIST.substring(6, 8)), 0);
+                
+                // Convert these IST times to local times using toLocaleTimeString
+                const options = {
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    hour12: false,
+                    timeZone: viewerTimeZone // Set timezone to the viewer's timezone
+                };
+                
+                const startTimeLocal = startWork.toLocaleTimeString('en-US', options); 
+                const endTimeLocal = endWork.toLocaleTimeString('en-US', options);
+
+                // Display the local times
+                document.getElementById('workhours').textContent = `My work hours in your local time (${viewerTimeZone}) are from ${startTimeLocal} to ${endTimeLocal}.`; 
+                
+            } 
+            displayWorkHours(); 
+        </script>
+    </body> 
+</html>
